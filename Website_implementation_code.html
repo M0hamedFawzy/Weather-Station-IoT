@@ -1,0 +1,204 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial;
+        }
+        .Content {
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+        }
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .header h1 {
+            margin: 0;
+            color: rgb(255, 255, 255);
+        }
+        html {
+            font-family: Arial;
+            display: inline-block;
+            margin: 0px auto;
+            text-align: center;
+        }
+        h2 {
+            font-size: 3.0rem;
+        }
+        h1 {
+            font-size: 1.5rem;
+            color: rgb(255, 255, 255);
+        }
+        p {
+            font-size: 3.0rem;
+        }
+        .units {
+            font-size: 1.2rem;
+        }
+        .dht-labels {
+            font-size: 1.5rem;
+            vertical-align: middle;
+            padding-bottom: 15px;
+        }
+        .reading-container {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            margin: auto;
+        }
+        .reading-container button {
+            margin-right: 20px;
+        }
+        .readings-container.active {
+            opacity: 1;
+            max-height: 500px;
+        }
+        .toggleButton {
+            color: #FFF;
+            font-family: Arial;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            padding: 15px;
+            margin: 80px 20px 20px;
+            cursor: pointer;
+            width: 322.71px;
+            height: 101px;
+            flex-shrink: 0;
+            border-radius: 54px;
+            background: #151515;
+            position: relative;
+            z-index: 1001;
+        }
+        main {
+            padding-top: 80px;
+        }
+        .header-auto-typed {
+            color: #83d3ef;
+        }
+        .spline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        #readings-container-dht, #readings-container-bmp {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <spline-viewer url="https://prod.spline.design/6qtU4WOD8pko4brU/scene.splinecode" class="spline"></spline-viewer>
+    <header>
+        <nav class="header">
+            <div class="navbar-brand">
+                <h1>Weather Station | <span class="header-auto-typed"></span></h1>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="Content">
+            <div class="reading-container">
+                <div id="readings-container-dht" class="readings-container">
+                    <p>
+                        <i class="fas fa-thermometer-half" style="color:#059e8a;"></i>
+                        <span class="dht-labels">Temperature</span>
+                        <span id="temperature">%TEMPERATURE%</span>
+                        <sup class="units">&deg;C</sup>
+                    </p>
+                    <p>
+                        <i class="fas fa-tint" style="color:#00add6;"></i>
+                        <span class="dht-labels">Humidity</span>
+                        <span id="humidity">%HUMIDITY%</span>
+                        <sup class="units">%</sup>
+                    </p>
+                </div>
+                <button class="toggleButton" onclick="toggleReadings('readings-container-dht')">DHT11 Readings</button>
+                <img id="slide-image" class="slide-image" src="DHT11-Module 1.png" alt="Slide Image">
+            </div>
+            <div class="reading-container">
+                <img id="slide-image" class="slide-image" src="bmp180 1.png" alt="Slide Image">
+                <button class="toggleButton" onclick="toggleReadings('readings-container-bmp')">BMP180 Readings</button>
+                <div id="readings-container-bmp" class="readings-container">
+                    <p>
+                        <i class="fas fa-thermometer-half" style="color:#059e8a;"></i>
+                        <span class="dht-labels">Temperature</span>
+                        <span id="temperature_bmp">%TEMPERATURE_bmp%</span>
+                        <sup class="units">&deg;C</sup>
+                    </p>
+                    <p>
+                        <i class="fa-solid fa-wind" style="color:#cdcdcd;"></i>
+                        <span class="dht-labels">Air Pressure</span>
+                        <span id="pressure_bmp">%PRESSURE_bmp%</span>
+                    </p>
+                    <p>
+                        <i class="fa-solid fa-water" style="color:#00add6;"></i>
+                        <span class="dht-labels">Sea level Pressure</span>
+                        <span id="sl_pressure_bmp">%SEA_LEVEL_bmp%</span>
+                    </p>
+                    <p>
+                        <i class="fa-solid fa-mountain" style="color:#e36a0d;"></i>
+                        <span class="dht-labels">Altitude</span>
+                        <span id="altitude_bmp">%ALTITUDE_bmp%</span>
+                    </p>
+                    <p>
+                        <i class="fa-solid fa-mountain-city" style="color:#29b0d9;"></i>
+                        <span class="dht-labels">Real Altitude</span>
+                        <span id="real_altitude_bmp">%REAL_ALTITUDE_bmp%</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        function toggleReadings(containerId) {
+            var container = document.getElementById(containerId);
+            if (container.style.display === "none") {
+                container.style.display = "block";
+            } else {
+                container.style.display = "none";
+            }
+        }
+
+        setInterval(function ( ) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var data = JSON.parse(this.responseText);
+                    document.getElementById("temperature").innerHTML = data.temperature;
+                    document.getElementById("humidity").innerHTML = data.humidity;
+                    document.getElementById("temperature_bmp").innerHTML = data.temperature_bmp;
+                    document.getElementById("pressure_bmp").innerHTML = data.pressure_bmp;
+                    document.getElementById("sl_pressure_bmp").innerHTML = data.sea_level_pressure_bmp;
+                    document.getElementById("altitude_bmp").innerHTML = data.altitude_bmp;
+                    document.getElementById("real_altitude_bmp").innerHTML = data.real_altitude_bmp;
+                }
+            };
+            xhttp.open("GET", "/readings", true);
+            xhttp.send();
+        }, 5000 );
+    </script>
+</body>
+</html>
